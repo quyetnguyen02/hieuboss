@@ -13,4 +13,9 @@ class HomeController extends Controller
         return view('UserPage.home');
 
     }
+
+    public function search() {
+        return view('UserPage.search');
+
+    }
 }

@@ -3,6 +3,7 @@
 @import './UserPage/banner.css';
 @import './UserPage/home.css';
 @import './UserPage/footer.css';
+@import './UserPage/search.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
