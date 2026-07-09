@@ -24,11 +24,11 @@ fi
 echo "Generate key..."
 docker compose exec php php artisan key:generate
 
-echo "Storage link..."
-docker compose exec php php artisan storage:link || true
-
 echo "Run migration..."
 docker compose exec php php artisan migrate --force
+
+npm install
+npm run build
 
 echo "Cache config..."
 docker compose exec php php artisan config:clear
