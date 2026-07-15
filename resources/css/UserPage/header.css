@@ -28,6 +28,7 @@ body {
     flex-wrap: wrap;
     gap: 16px 24px;
     transition: all 0.2s;
+
 }
 
 /* ---------- LOGO ---------- */
@@ -41,11 +42,13 @@ body {
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    flex: 0 0 auto; /* Không chiếm cố định 320px nữa */
 }
 
-.logo i {
-    color: #e67e22;
-    font-size: 26px;
+.logo img {
+    width: 80px;      /* Desktop */
+    height: auto;
+    display: block;
 }
 
 .logo span {
@@ -54,9 +57,76 @@ body {
 
 /* ---------- Ô TÌM KIẾM ---------- */
 .search-wrapper {
-    flex: 1 1 320px;
-    min-width: 180px;
-    position: relative;
+    flex:1;
+    display:flex;
+    align-items:center;
+    position:relative;
+    gap:12px;
+}
+
+.search-wrapper input{
+    flex:1;
+    height:46px;
+
+    padding:0 20px 0 45px;
+
+    border:1.5px solid #e9edf2;
+    border-radius:30px;
+
+    background:#f8fafc;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.25s;
+}
+
+.search-wrapper input:focus{
+    border-color:#e67e22;
+    box-shadow:0 0 0 4px rgba(230,126,34,.1);
+}
+
+.search-icon{
+    position:absolute;
+    left:18px;
+    color:#9aa6b5;
+    pointer-events:none;
+}
+
+.search-btn{
+    height:46px;
+
+    padding:0 24px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#1e2b3c;
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    transition:.25s;
+
+    white-space:nowrap;
+}
+
+.search-btn:hover{
+    background:#2c3e50;
+    transform:translateY(-1px);
 }
 
 .search-wrapper input {
@@ -104,6 +174,13 @@ body {
     transition: 0.2s;
     cursor: default;
     white-space: nowrap;
+    position: relative;
+    display: inline-flex;
+
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: #fff;
+    text-decoration: none;
 }
 
 .cart-box:hover {
@@ -112,7 +189,7 @@ body {
 }
 
 .cart-box i {
-    font-size: 20px;
+    font-size: 18px;
     color: #1e2b3c;
 }
 
@@ -200,6 +277,9 @@ body {
 
 .categories-grid{
     padding: 10px 0;
+    max-height: 700px; /* Hiển thị khoảng 10-12 danh mục */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .categories-list{
@@ -221,8 +301,9 @@ body {
     padding: 12px 18px;
     color: #333;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 19px;
     transition: .2s;
+    text-transform: capitalize;
 }
 
 .categories-list a:hover{
@@ -231,6 +312,29 @@ body {
     padding-left: 24px;
 }
 
+.cart-count {
+    position: absolute;
+    top: -6px;
+    left: 22px;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 5px;
+
+    border-radius: 50%;
+    background: #ff3b30;
+    color: #fff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid #fff;
+}
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:992px){
 
@@ -251,10 +355,16 @@ body {
     }
 
     .search-wrapper{
-
+        width:100%;
         order:2;
 
         flex:1;
+    }
+    .search-btn{
+
+        padding:0 18px;
+
+        font-size:14px;
     }
 
     .cart-box{
@@ -409,7 +519,6 @@ body {
 
         padding:14px;
     }
-
 }
 
 /* ---------- (tuỳ chọn) 1 dòng demo bên dưới ---------- */

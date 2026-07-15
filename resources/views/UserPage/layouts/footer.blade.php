@@ -5,22 +5,21 @@
         <!-- Công ty -->
         <div class="footer-col">
 
-            <h3>CÔNG TY TNHH THƯƠNG MẠI VÀ DỊCH VỤ SPEGO</h3>
+            <h3>{{$shop->shop_name}}</h3>
 
             <p>
                 <strong>Địa chỉ:</strong>
-                Lô số 10, Khu X1, ngõ 29 đường Mạc Thái Tổ,
-                Phường Cầu Giấy, Hà Nội
+                {{$shop->address}}
             </p>
 
             <p>
                 <strong>Hotline:</strong>
-                085.6167.666
+                {{$shop->hotline}}
             </p>
 
             <p>
                 <strong>Email:</strong>
-                hotro.boshun@gmail.com
+                {{$shop->email}}
             </p>
 
         </div>
@@ -56,21 +55,17 @@
             <h3>KẾT NỐI VỚI CHÚNG TÔI</h3>
 
             <div class="fanpage">
-
-                <iframe
-                    src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/boshun.vn&tabs&width=340&height=130&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
-                    width="340"
-                    height="130"
-                    style="border:none;overflow:hidden"
-                    scrolling="no"
-                    frameborder="0">
-                </iframe>
-
+                <div class="fb-page"
+                     data-href="https://www.facebook.com/profile.php?id=61591430091769"
+                     data-width="340"
+                     data-height="130"
+                     data-hide-cover="false"
+                     data-show-facepile="false"></div>
             </div>
 
             <div class="socials">
 
-                <a href="#">
+                <a href="https://www.facebook.com/profile.php?id=61591430091769">
                     <i class="fab fa-facebook-f"></i>
                 </a>
 
@@ -91,16 +86,8 @@
     <div class="footer-bottom">
 
         <h4>
-            © 2025 CÔNG TY TNHH THƯƠNG MẠI VÀ DỊCH VỤ SPEGO
+            © {{date('Y')  . ' ' . $shop->shop_name}}
         </h4>
-
-        <p>
-            Giấy chứng nhận đăng ký kinh doanh số 0110273507
-        </p>
-
-        <p>
-            Địa chỉ đăng ký trụ sở chính: Yên Hòa, Hà Nội
-        </p>
 
     </div>
 

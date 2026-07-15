@@ -1,4 +1,3 @@
-<!-- resources/views/home.blade.php -->
 @extends('UserPage.layouts.app')
 
 @section('title', 'Tìm kiếm')
@@ -9,227 +8,203 @@
         <div class="search-container">
 
             <!-- LEFT -->
-            <div class="search-content">
-
-                <div class="search-toolbar">
-
-                    <div class="category-title">
-                        Dụng cụ cơ khí, bình nén khí, máy xoa vữa, máy bơm hơi...
-                    </div>
-
-                    <select class="sort-select">
-                        <option>Sắp xếp theo mức độ phổ biến</option>
-                        <option>Mới nhất</option>
-                        <option>Giá tăng dần</option>
-                        <option>Giá giảm dần</option>
-                    </select>
-
-                </div>
-
+            <section class="product-section">
                 <div class="product-grid">
 
-                    @for($i = 1; $i <= 10; $i++)
+                    @foreach($products as $product)
                         <div class="product-card">
 
                             <div class="product-image">
 
-                                <img src="{{ asset('image/a.webp') }}">
+                                <img src="{{ asset('/image/' . data_get($product, 'image.src', 'images/no-image.png'))}}">
 
-                                <span class="discount">-38%</span>
+                                @if($product['discount_percent'] > 0)
+                                    <span class="discount">-{{$product['discount_percent']}}%</span>
+                                @endif
 
-                                <button class="quick-view-btn">
+                                <button class="quick-view-btn"
+                                        data-name="{{ $product['name'] }}"
+                                        data-image="{{ asset('/image/' . data_get($product,'image.src','images/no-image.png')) }}"
+                                        data-original="{{ $product['original_price'] }}"
+                                        data-sale="{{ $product['sale_price'] }}">
                                     XEM NHANH
                                 </button>
 
                             </div>
 
-                            <div class="product-name">
-                                Máy hút bụi công nghiệp Workfix WF-HBCN15L...
-                            </div>
-
-                            <div class="price">
-                                <span class="old-price">1.690.000đ</span>
-                                <span class="new-price">1.260.100đ</span>
-                            </div>
-
-                        </div>
-
-                        <div class="quick-modal" id="quickModal">
-
-                            <div class="modal-content">
-
-                                <span class="close-modal">&times;</span>
-
-                                <div class="modal-left">
-
-                                    <img id="modalImage" style="width: 350px; height: 350px"
-                                         src="{{ asset('image/a.webp') }}">
-
+                            <a href="{{ route('product-detail', [
+                                'product' => $product['id'],
+                                'slug' => Str::slug($product['name'])
+                            ]) }}">
+                                <div class="product-name">
+                                    {{$product['name']}}
                                 </div>
 
-                                <div class="modal-right">
-
-                                    <h2 id="modalTitle">
-                                        Máy Bơm Chìm Chạy Pin Bossun BS-BCP03BL – 80L/phút – Cột áp cao 5-8m
-                                    </h2>
-
-                                    <div class="product-option">
-                                        <button class="option-btn active">Thân máy</button>
-                                        <button class="option-btn">Bộ 1 Pin</button>
-                                    </div>
-
-                                    <div class="product-price">
-                                        <span class="old-price">1.650.000đ</span>
-                                        <span class="new-price">1.040.500đ</span>
-                                    </div>
-
+                                <div class="price">
+                                    @if($product['sale_price'])
+                                        <span class="old-price">{{number_format($product['original_price'])}}đ</span>
+                                        <span class="new-price">{{number_format($product['sale_price'])}}đ</span>
+                                    @else
+                                        <span class="new-price">{{number_format($product['original_price'])}}đ</span>
+                                    @endif
                                 </div>
-
-                            </div>
-
+                            </a>
                         </div>
-                    @endfor
+
+                    @endforeach
+
 
                 </div>
+                <div class="pagination-wrapper">
+                    {{ $products->links('vendor.pagination.default') }}
+                </div>
 
-            </div>
+                <div class="quick-modal" id="quickModal">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+
+                        <div class="modal-left">
+                            <img id="modalImage">
+                        </div>
+
+                        <div class="modal-right">
+                            <h1 id="modalTitle"></h1>
+
+                            <div class="product-option">
+                                <button class="option-btn active">Thân máy</button>
+                                {{--                            <button class="option-btn">Bộ 1 Pin</button>--}}
+                            </div>
+                            <div class="product-price">
+                                <span class="old-price" id="modalOldPrice"></span>
+                                <span class="new-price" id="modalNewPrice"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
 
             <!-- RIGHT -->
 
-            <aside class="filter-sidebar">
+            <form action="{{ route('search') }}" class="filter-sidebar" method="GET">
 
-                <div class="filter-header">
-                    Bộ lọc
-                </div>
+                {{-- Giữ keyword nếu có --}}
+                <input type="hidden" name="keyword" value="{{ $keyword }}">
+                <aside class="filter-sidebar">
 
-                <div class="filter-group">
+                    <div class="filter-header">
+                        Bộ lọc
+                    </div>
 
-                    <h4>MỨC GIÁ</h4>
+                    {{-- MỨC GIÁ --}}
+                    <div class="filter-group">
 
-                    <label><input type="radio"> 0đ - 500.000đ</label>
+                        <h4>MỨC GIÁ</h4>
 
-                    <label><input type="radio"> 500.000đ - 1.000.000đ</label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="price"
+                                value="0-500000"
+                                {{ request('price') == '0-500000' ? 'checked' : '' }}>
+                            0đ - 500.000đ
+                        </label>
 
-                    <label><input type="radio"> 1.000.000đ - 2.000.000đ</label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="price"
+                                value="500000-1000000"
+                                {{ request('price') == '500000-1000000' ? 'checked' : '' }}>
+                            500.000đ - 1.000.000đ
+                        </label>
 
-                    <label><input type="radio"> 2.000.000đ - ∞</label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="price"
+                                value="1000000-2000000"
+                                {{ request('price') == '1000000-2000000' ? 'checked' : '' }}>
+                            1.000.000đ - 2.000.000đ
+                        </label>
 
-                </div>
+                        <label>
+                            <input
+                                type="radio"
+                                name="price"
+                                value="2000000-max"
+                                {{ request('price') == '2000000-max' ? 'checked' : '' }}>
+                            Trên 2.000.000đ
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="price"
+                                value=""
+                                {{ request('price') == '' ? 'checked' : '' }}>
+                            Tất Cả
+                        </label>
 
-                <div class="filter-group">
+                    </div>
 
-                    <h4>THƯƠNG HIỆU</h4>
 
-                    <label><input type="checkbox"> Bossun</label>
+                    <div class="filter-group">
 
-                    <label><input type="checkbox"> Workfix</label>
+                        <h4>Loại Sản Phẩm</h4>
 
-                </div>
+                        @foreach($gens as $gen)
 
-                <div class="filter-group">
+                            <label>
 
-                    <h4>SẢN PHẨM DUNG LƯỢNG PIN</h4>
+                                <input
+                                    type="checkbox"
+                                    name="gen[]"
+                                    value="{{ $gen }}"
+                                    {{ in_array($gen, request('gen', [])) ? 'checked' : '' }}>
 
-                    <label><input type="checkbox"> 2.0Ah</label>
+                                Gen {{ $gen }}
 
-                    <label><input type="checkbox"> 4.0Ah</label>
+                            </label>
 
-                    <label><input type="checkbox"> 6.0Ah</label>
+                        @endforeach
 
-                    <label><input type="checkbox"> 8.0Ah</label>
+                    </div>
 
-                </div>
+                    <div class="filter-group">
 
-            </aside>
+                        <h4>Sản phẩm sử dụng</h4>
+
+                        @foreach($types as $key => $value)
+
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    name="type[]"
+                                    value="{{ $key }}"
+                                    {{ in_array($key, request('type', [])) ? 'checked' : '' }}>
+
+                                {{ $value }}
+
+                            </label>
+
+                        @endforeach
+
+                    </div>
+
+                    <div class="filter-action">
+                        <button type="submit" class="filter-btn">
+                            <i class="fas fa-filter"></i>
+                            Áp dụng
+                        </button>
+                    </div>
+
+                </aside>
+            </form>
 
         </div>
 
 
     </section>
 
-{{--    <section class="product-section">--}}
-
-{{--        <div class="section-header">--}}
-{{--            <div class="section-title">--}}
-{{--                MÁY HÚT THỔI BỤI--}}
-{{--            </div>--}}
-
-{{--            <a href="#" class="view-all-top">--}}
-{{--                >>Xem tất cả--}}
-{{--            </a>--}}
-{{--        </div>--}}
-
-{{--        <div class="product-grid">--}}
-
-{{--            @for($i = 1; $i <= 10; $i++)--}}
-{{--                <div class="product-card">--}}
-
-{{--                    <div class="product-image">--}}
-
-{{--                        <img src="{{ asset('image/a.webp') }}">--}}
-
-{{--                        <span class="discount">-38%</span>--}}
-
-{{--                        <button class="quick-view-btn">--}}
-{{--                            XEM NHANH--}}
-{{--                        </button>--}}
-
-{{--                    </div>--}}
-
-{{--                    <div class="product-name">--}}
-{{--                        Máy hút bụi công nghiệp Workfix WF-HBCN15L...--}}
-{{--                    </div>--}}
-
-{{--                    <div class="price">--}}
-{{--                        <span class="old-price">1.690.000đ</span>--}}
-{{--                        <span class="new-price">1.260.100đ</span>--}}
-{{--                    </div>--}}
-
-{{--                </div>--}}
-
-{{--                <div class="quick-modal" id="quickModal">--}}
-
-{{--                    <div class="modal-content">--}}
-
-{{--                        <span class="close-modal">&times;</span>--}}
-
-{{--                        <div class="modal-left">--}}
-
-{{--                            <img id="modalImage" style="width: 350px; height: 350px"--}}
-{{--                                 src="{{ asset('image/a.webp') }}">--}}
-
-{{--                        </div>--}}
-
-{{--                        <div class="modal-right">--}}
-
-{{--                            <h2 id="modalTitle">--}}
-{{--                                Máy Bơm Chìm Chạy Pin Bossun BS-BCP03BL – 80L/phút – Cột áp cao 5-8m--}}
-{{--                            </h2>--}}
-
-{{--                            <div class="product-option">--}}
-{{--                                <button class="option-btn active">Thân máy</button>--}}
-{{--                                <button class="option-btn">Bộ 1 Pin</button>--}}
-{{--                            </div>--}}
-
-{{--                            <div class="product-price">--}}
-{{--                                <span class="old-price">1.650.000đ</span>--}}
-{{--                                <span class="new-price">1.040.500đ</span>--}}
-{{--                            </div>--}}
-
-{{--                        </div>--}}
-
-{{--                    </div>--}}
-
-{{--                </div>--}}
-{{--            @endfor--}}
-
-{{--        </div>--}}
-
-{{--        <div class="section-footer">--}}
-{{--            <a href="#" class="view-all-btn">--}}
-{{--                Xem tất cả Máy Hút - Thổi Bụi--}}
-{{--            </a>--}}
-{{--        </div>--}}
-
-{{--    </section>--}}
 @endsection
