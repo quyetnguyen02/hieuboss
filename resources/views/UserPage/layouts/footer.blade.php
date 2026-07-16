@@ -56,7 +56,7 @@
 
             <div class="fanpage">
                 <div class="fb-page"
-                     data-href="https://www.facebook.com/profile.php?id=61591430091769"
+                     data-href="{{$shop->fanpage}}"
                      data-width="340"
                      data-height="130"
                      data-hide-cover="false"
@@ -65,17 +65,25 @@
 
             <div class="socials">
 
-                <a href="https://www.facebook.com/profile.php?id=61591430091769">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
+                @if($shop->fanpage)
+                    <a href="{{$shop->fanpage}}">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                @endif
 
-                <a href="#">
-                    <i class="fas fa-envelope"></i>
-                </a>
 
-                <a href="#">
-                    <i class="fas fa-phone"></i>
-                </a>
+                @if($shop->email)
+                    <a href="{{'mailto:' . $shop->email}}">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                @endif
+
+                @if($shop->hotline)
+                    <a href="{{'tel:' . $shop->hotline}}">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                @endif
+
 
             </div>
 
@@ -92,3 +100,20 @@
     </div>
 
 </footer>
+
+<div class="floating-contact">
+    <a
+        href="{{'https://zalo.me/' . $shop->hotline}}"
+        target="_blank"
+        class="contact-btn zalo">
+
+        <img src="{{asset('image/logo/zalo.svg')}}" alt="Zalo">
+
+    </a>
+
+    <a
+        href="{{'tel:' . $shop->hotline}}"
+        class="contact-btn phone">
+        <i class="fa-solid fa-phone"></i>
+    </a>
+</div>

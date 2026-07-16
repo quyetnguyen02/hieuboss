@@ -13,3 +13,6 @@
         @include('UserPage.layouts.product')
     @endforeach
 @endsection
+@push('scripts')
+    @vite('resources/js/UserPage/home.js')
+@endpush

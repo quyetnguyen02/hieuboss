@@ -1,5 +1,10 @@
-import { addToCart, checkProductInCart } from './card.js';
+import {addToCart, checkProductInCart, countCart, getCookie, setCookie} from './card.js';
+import {submitOrder} from './orderModal.js';
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    countCart();
+})
 
 const modal = document.getElementById("cartModal");
 
@@ -45,3 +50,76 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.innerText = "Đã thêm vào giỏ";
     }
 });
+
+
+const modalOrder=document.getElementById("checkoutModal");
+const totalPrice=document.getElementById("totalPrice");
+// document.querySelector(".checkout1")
+//     .addEventListener("click",()=>{
+//
+//         modalOrder.classList.add("active");
+//
+//         console.log(totalPrice)
+//         document.getElementById("modalTotal").innerHTML= totalPrice.innerHTML
+//
+//     });
+//
+// document.getElementById("closeModal")
+//     .addEventListener("click",()=>{
+//
+//         modalOrder.classList.remove("active");
+//
+//     });
+//
+// document
+//     .getElementById("checkoutForm")
+//     .addEventListener("submit", function (e) {
+//
+//         e.preventDefault();
+//
+//         document
+//             .getElementById("confirmTotal")
+//             .innerHTML = totalPrice.innerHTML;
+//
+//         document
+//             .getElementById("confirmModal")
+//             .classList.add("active");
+//
+//     });
+//
+//
+// document
+//     .getElementById("cancelConfirm")
+//     .onclick = function () {
+//
+//     document
+//         .getElementById("confirmModal")
+//         .classList.remove("active");
+//
+// };
+
+
+document
+    .getElementById("acceptOrder")
+    .onclick = function () {
+
+    document
+        .getElementById("confirmModal")
+        .classList.remove("active");
+    var product= {
+        'id':document.getElementById('productId').value,
+        'sku':document.getElementById('sku').value,
+        'name':document.getElementById('productName').innerHTML,
+        'image':document.getElementById('mainImage').src,
+        'qty': Number(document.getElementById('quantity').value),
+        'price':Number(document.getElementById('unitPrice').innerHTML.replace(/[^\d]/g, "")),
+    }
+
+    console.log('a')
+    setCookie("cart", []);
+    addToCart(product)
+    const cookie = getCookie('cart');
+    var cart = JSON.parse(cookie);
+    submitOrder(cart);
+
+};

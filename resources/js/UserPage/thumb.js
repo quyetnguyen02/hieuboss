@@ -1,13 +1,15 @@
+import {countCart} from "./card.js";
+
 console.log(window.product)
 const products = {
 
     body: {
 
-        oldPrice: window.product.original_price,
+        oldPrice: window.product ? window.product.original_price : '0',
 
-        newPrice: window.product.sale_price,
+        newPrice: window.product ? window.product.sale_price : '0',
 
-        images:window.product.thumbs
+        images:window.product ? window.product.thumbs : ''
 
     },
 
@@ -50,6 +52,9 @@ renderProduct("body");
 function renderProduct(type){
 
     const product = products[type];
+    if (product.oldPrice === '0') {
+        return;
+    }
 
     if (product.newPrice > 0) {
         oldPrice.innerHTML = product.oldPrice.toLocaleString('vi-VN') + 'đ';
@@ -120,7 +125,7 @@ const quantityInput = document.getElementById("quantity");
 const plusBtn = document.getElementById("plus");
 const minusBtn = document.getElementById("minus");
 
-const unitPrice = Number(window.product.sale_price);
+const unitPrice = Number(window.product.sale_price === 0 ? window.product.original_price : window.product.sale_price );
 
 const totalPrice = document.getElementById("totalPrice");
 
@@ -158,6 +163,10 @@ minusBtn.addEventListener("click", () => {
 
 // Người dùng nhập trực tiếp
 quantityInput.addEventListener("input", updateTotal);
+
+document.addEventListener('DOMContentLoaded', function () {
+    countCart();
+})
 
 
 

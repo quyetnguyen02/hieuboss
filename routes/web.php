@@ -7,6 +7,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/product-detail/{product}-{slug}', [HomeController::class, 'productDetail'])->name('product-detail');
 Route::get('/card', [HomeController::class, 'card'])->name('card');
+Route::post('/order',[HomeController::class,'order'])->name('order');
 
 
 Route::get('/debug', function () {

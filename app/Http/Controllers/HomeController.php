@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Thumb;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class HomeController extends Controller
 {
@@ -70,12 +74,6 @@ class HomeController extends Controller
 
         $productModel = new Product();
 
-
-//        if (!$keyword) {
-//            $products = $productModel->getProductsByCategory([1, 2, 3, 4]);
-//        }
-
-
         $products = $productModel->searchProducts($keyword, $price, $gen, $type, $category_id);
         $categoryListProducts = $products->getCollection()
             ->groupBy('category_id')
@@ -109,7 +107,6 @@ class HomeController extends Controller
         $thumb_ids = json_decode($product['thumb_id'], true);;
         $thumbs = $thumbModel->getThumbByIds($thumb_ids)->pluck('src')->toArray();
         $product['thumbs'] = $thumbs;
-//        dd($product);
         return view('UserPage.product-detail', [
             'product' => $product,
             'shop' => $this->shop,
@@ -131,5 +128,91 @@ class HomeController extends Controller
             'categories' => $categories,
         ]);
 
+    }
+
+    public function order(Request $request)
+    {
+        $request->validate([
+
+            'customer_name'=>'required',
+
+            'phone'=>'required',
+
+            'address'=>'required',
+
+            'cart'=>'required'
+
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $total =0 ;
+
+            foreach($request->cart as $item) {
+
+                $total += $item['qty'] * $item['price'];
+            }
+
+            $order = [
+                'customer_name'=>$request->customer_name,
+
+                'phone'=>$request->phone,
+
+                'address'=>$request->address,
+
+                'total_price'=>$total
+            ];
+//            dd($order);
+            $orderModel = new Order();
+            $order = $orderModel->add($order);
+
+            if (!$order) {
+                return response()->json([
+
+                    'success' => false
+
+                ], 400);
+            }
+
+
+            foreach($request->cart as $item){
+                $orderItem = [
+                    'order_id'=>$order->id,
+
+                    'product_id'=>$item['id'],
+
+                    'qty'=>$item['qty'],
+
+                    'price'=>$item['price'],
+                ];
+
+                $orderItemModel = new OrderItem();
+                $orderItem = $orderItemModel->add($orderItem);
+
+                if (!$orderItem) {
+                    return response()->json([
+
+                        'success' => false
+
+                    ], 400);
+                }
+
+            }
+            DB::commit();
+
+            return response()->json([
+
+                'success'=>true
+
+            ]);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return response()->json([
+
+                'success' => false
+
+            ], 400);
+        }
     }
 }

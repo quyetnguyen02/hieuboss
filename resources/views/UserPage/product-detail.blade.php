@@ -85,7 +85,7 @@
                             Thêm Giỏ Hàng
 
                         </button>
-                        <button class="buy-now">
+                        <button class="buy-now checkout">
 
                             MUA NGAY
 
@@ -133,9 +133,18 @@
             </div>
         </div>
         @include('UserPage.layouts.modal')
+        @include('UserPage.layouts.orderModal')
     </section>
 
     <script>
         window.product = @json($product);
     </script>
+
+
 @endsection
+@push('scripts')
+    @vite([
+        'resources/js/UserPage/thumb.js',
+        'resources/js/UserPage/modal.js',
+        ])
+@endpush

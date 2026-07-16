@@ -26,7 +26,9 @@
                                         data-name="{{ $product['name'] }}"
                                         data-image="{{ asset('/image/' . data_get($product,'image.src','images/no-image.png')) }}"
                                         data-original="{{ $product['original_price'] }}"
-                                        data-sale="{{ $product['sale_price'] }}">
+                                        data-sale="{{ $product['sale_price'] }}"
+                                        data-id = "{{$product['id']}}"
+                                        data-sku = {{$product['sku']}}>
                                     XEM NHANH
                                 </button>
 
@@ -62,6 +64,8 @@
                 <div class="quick-modal" id="quickModal">
                     <div class="modal-content">
                         <span class="close-modal">&times;</span>
+                        <input type="hidden" id="skuModal" value="">
+
 
                         <div class="modal-left">
                             <img id="modalImage">
@@ -77,6 +81,13 @@
                             <div class="product-price">
                                 <span class="old-price" id="modalOldPrice"></span>
                                 <span class="new-price" id="modalNewPrice"></span>
+                            </div>
+                            <div style="display: flex; gap: 10px">
+                                <button class=" buy-now add-card" id="btnAddCart" data-id="" style="font-size: 17px">
+
+                                    Thêm Giỏ Hàng
+
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -203,8 +214,9 @@
             </form>
 
         </div>
-
-
     </section>
-
 @endsection
+@push('scripts')
+    @vite('resources/js/UserPage/home.js')
+@endpush
+
