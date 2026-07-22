@@ -55,7 +55,7 @@
                     Tiếp tục mua
                 </a>
 
-                <button class="checkout">
+                <button class="checkout" id="checkout">
                     Đặt Hàng
                 </button>
 

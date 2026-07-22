@@ -41,7 +41,7 @@ class HomeController extends Controller
 
         //get Product
         $productModel = new Product();
-        $products = $productModel->getProductsByCategory([1, 2, 3, 4]);
+        $products = $productModel->getProductsByCategory([26, 56, 3, 4]);
 
 
         $categoryListProducts = collect($products)->keys()->all();

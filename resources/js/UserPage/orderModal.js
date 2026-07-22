@@ -2,7 +2,7 @@ import {getCookie, setCookie} from "./card.js";
 
 const modal=document.getElementById("checkoutModal");
 const totalPrice=document.getElementById("totalPrice");
-document.querySelector(".checkout")
+document.querySelector("#checkout")
     .addEventListener("click",()=>{
 
         modal.classList.add("active");

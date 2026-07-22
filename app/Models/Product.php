@@ -26,7 +26,7 @@ class Product extends Model
             $result[$categoryId] = Product::with('image:id,src')
                 ->where('category_id', $categoryId)
                 ->latest()
-                ->take(10)
+                ->take(8)
                 ->get()
                 ->toArray();
         }
