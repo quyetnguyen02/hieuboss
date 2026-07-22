@@ -2,23 +2,35 @@
 <header class="header">
 
     <!-- LOGO -->
-    <a href="#" class="logo">
-        <i class="fas fa-cube"></i>
-        BOSHUN
+    <a href="{{route('home')}}" class="logo">
+        <img src="{{asset('image/logo/' . $shop->logo)}}" alt="hieu_boss">
     </a>
 
     <!-- Ô TÌM KIẾM -->
-    <div class="search-wrapper">
+
+    <form action="{{ route('search') }}" method="GET" class="search-wrapper">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Tìm kiếm..." aria-label="Tìm kiếm sản phẩm" />
-    </div>
+        <input
+            type="text"
+            name="keyword"
+            placeholder="Nhập, tên, Mã sản phẩm, Giá tiền để tìm kiếm"
+            aria-label="Tìm kiếm sản phẩm"
+
+            @if($keyword) value="{{$keyword}}" @endif
+        >
+
+        <button class="search-btn" type="submit">
+            <i class="fas fa-search"></i>
+            Tìm kiếm
+        </button>
+    </form>
 
     <!-- GIỎ HÀNG -->
-    <div class="cart-box">
+    <a href="{{route('card')}}" class="cart-box" style="cursor: pointer;">
         <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
         <span class="cart-text">Giỏ hàng</span>
-        <span class="cart-price">/ 0đ</span>
-    </div>
+    </a>
 
     <!-- Có thể giữ nút DANH MỤC nếu muốn dùng để toggle sidebar -->
     <div class="nav-menu">
@@ -31,23 +43,13 @@
         <div class="categories-section" id="categorySection">
             <div class="categories-grid">
                 <ul class="categories-list">
-                    <li><a href="#">DUNG CỤ LÀM VƯỜN</a></li>
-                    <li><a href="#">DUNG CỤ CƠ KHÍ</a></li>
-                    <li><a href="#">MÁY CĂN BẰNG LASER</a></li>
-                    <li><a href="#">MÁY THỐI – HÚT BỤI</a></li>
-                    <li><a href="#">MÁY CỦA – MÁY CẮT</a></li>
-                    <li><a href="#">MÁY HÀN</a></li>
-                    <li><a href="#">MÁY KHOAN ĐIỆN</a></li>
-                    <li><a href="#">MÁY KHOAN PIN</a></li>
-                    <li><a href="#">MÁY KHOAN ĐỨC BÊ TÔNG</a></li>
-                    <li><a href="#">MÁY BẢN VÍT PIN</a></li>
-                    <li><a href="#">MÁY MÀI</a></li>
-                    <li><a href="#">MÁY PHUN SƠN</a></li>
-                    <li><a href="#">MÁY RỬA XE</a></li>
-                    <li><a href="#">MÁY SIẾT BULONG PIN</a></li>
-                    <li><a href="#">QUẠT PIN – QUẠT TÍCH ĐIỆN</a></li>
-                    <li><a href="#">PHỤ KIỆN</a></li>
-                    <li><a href="#">PIN – SAC</a></li>
+                    @if($categories)
+                        @foreach($categories as $category)
+                            <li>
+                                <a href="{{route('search', ['category_id' => $category['id'],'slug' => Str::slug($category['name'])])}}">{{ $category->name }}</a>
+                            </li>
+                        @endforeach
+                    @endif
                 </ul>
 
             </div>

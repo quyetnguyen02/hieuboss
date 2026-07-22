@@ -32,6 +32,7 @@
     font-weight:bold;
 
     border-radius:8px 8px 0 0;
+    text-transform: capitalize
 }
 
 .view-all-top{
@@ -326,7 +327,166 @@
 }
 
 
+.floating-contact{
 
+    position:fixed;
+
+    left:20px;
+
+    bottom:20px;
+
+    z-index:9999;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+}
+
+.contact-btn{
+
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-decoration:none;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+
+    transition:.3s;
+
+    position:relative;
+
+    animation:shake 2s infinite;
+}
+.contact-btn::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-8px;
+
+    border-radius:50%;
+
+    background:inherit;
+
+    opacity:.25;
+
+    animation:ring 2s infinite;
+}
+.contact-btn>*{
+
+    position:relative;
+
+    z-index:2;
+}
+@keyframes ring{
+
+    0%{
+
+        transform:scale(.8);
+
+        opacity:.4;
+    }
+
+    60%{
+
+        transform:scale(1.5);
+
+        opacity:0;
+    }
+
+    100%{
+
+        transform:scale(1.5);
+
+        opacity:0;
+    }
+
+}
+.contact-btn:hover{
+
+    animation:none;
+
+    transform:scale(1.15);
+}
+@keyframes shake{
+
+    0%{
+        transform:scale(1);
+    }
+
+    5%{
+        transform:scale(1.18) rotate(-8deg);
+    }
+
+    10%{
+        transform:scale(1.18) rotate(8deg);
+    }
+
+    15%{
+        transform:scale(1.18) rotate(-8deg);
+    }
+
+    20%{
+        transform:scale(1.18) rotate(8deg);
+    }
+
+    25%{
+        transform:scale(1.1);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+.zalo{
+
+    background:#ffffff;
+}
+
+.zalo img{
+
+    width:36px;
+
+    height:36px;
+}
+
+.phone{
+
+    background:#ef0000;
+
+    color:#fff;
+
+    font-size:24px;
+}
+
+@keyframes pulse{
+
+    0%{
+
+        box-shadow:0 0 0 0 rgba(239,0,0,.45);
+    }
+
+    70%{
+
+        box-shadow:0 0 0 18px rgba(239,0,0,0);
+    }
+
+    100%{
+
+        box-shadow:0 0 0 0 rgba(239,0,0,0);
+    }
+}
 @media(max-width:992px){
 
     .product-grid{
@@ -378,9 +538,33 @@
         font-size:13px;
     }
 
-}
+    .floating-contact{
 
-@media(max-width:768px){
+        left:15px;
+
+        bottom:15px;
+    }
+
+    .contact-btn{
+
+        width:52px;
+
+        height:52px;
+
+
+    }
+
+    .phone{
+
+        font-size:20px;
+    }
+
+    .zalo img{
+
+        width:30px;
+
+        height:30px;
+    }
 
     .modal-content{
 
@@ -400,6 +584,7 @@
     }
 
 }
+
 
 @media (max-width:576px){
 
