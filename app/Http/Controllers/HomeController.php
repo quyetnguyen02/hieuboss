@@ -41,7 +41,7 @@ class HomeController extends Controller
 
         //get Product
         $productModel = new Product();
-        $products = $productModel->getProductsByCategory([26, 56, 3, 4]);
+        $products = $productModel->getProductsByCategory([26, 57, 27, 26, 25,2]);
 
 
         $categoryListProducts = collect($products)->keys()->all();
@@ -133,15 +133,19 @@ class HomeController extends Controller
     public function order(Request $request)
     {
         $request->validate([
+            'customer_name' => 'required',
 
-            'customer_name'=>'required',
+            'phone' => [
+                'required',
+                'regex:/^0[3|5|7|8|9][0-9]{8}$/'
+            ],
 
-            'phone'=>'required',
+            'address' => 'required',
 
-            'address'=>'required',
-
-            'cart'=>'required'
-
+            'cart' => 'required'
+        ], [
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
+            'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam gồm 10 số.'
         ]);
 
         try {

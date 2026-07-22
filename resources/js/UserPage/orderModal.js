@@ -100,6 +100,7 @@ export function submitOrder(cart)
         if(!response.ok){
 
             let msg="";
+            console.log(data.errors);
 
             Object.values(data.errors).forEach(item=>{
 
@@ -112,7 +113,7 @@ export function submitOrder(cart)
                 "error",
 
                 "Thông tin chưa hợp lệ",
-                ''
+                msg
             );
 
             return;

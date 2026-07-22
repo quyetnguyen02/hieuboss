@@ -229,6 +229,8 @@ function renderCart() {
     }
     const container = document.getElementById("cartItems");
 
+    let html = "";
+    let total = 0;
     if (!cart.length) {
 
         container.innerHTML = `
@@ -239,11 +241,14 @@ function renderCart() {
             </div>
         `;
 
+        document.getElementById("subTotal").innerText =
+            formatMoney(total) + "đ";
+
+        document.getElementById("totalPrice").innerText =
+            formatMoney(total) + "đ";
+
         return;
     }
-
-    let html = "";
-    let total = 0;
 
     cart.forEach(item => {
 

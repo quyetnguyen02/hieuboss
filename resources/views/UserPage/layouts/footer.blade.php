@@ -90,15 +90,6 @@
         </div>
 
     </div>
-
-    <div class="footer-bottom">
-
-        <h4>
-            © {{date('Y')  . ' ' . $shop->shop_name}}
-        </h4>
-
-    </div>
-
 </footer>
 
 <div class="floating-contact">
