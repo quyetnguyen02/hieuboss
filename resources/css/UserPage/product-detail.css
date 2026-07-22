@@ -45,8 +45,6 @@
     max-width: 500px;      /* bằng chiều rộng ảnh lớn */
 
     padding: 6px 0;
-
-    scrollbar-width:none;
     -ms-overflow-style:none;
 }
 

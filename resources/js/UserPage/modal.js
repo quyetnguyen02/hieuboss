@@ -52,53 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-const modalOrder=document.getElementById("checkoutModal");
-const totalPrice=document.getElementById("totalPrice");
-// document.querySelector(".checkout1")
-//     .addEventListener("click",()=>{
-//
-//         modalOrder.classList.add("active");
-//
-//         console.log(totalPrice)
-//         document.getElementById("modalTotal").innerHTML= totalPrice.innerHTML
-//
-//     });
-//
-// document.getElementById("closeModal")
-//     .addEventListener("click",()=>{
-//
-//         modalOrder.classList.remove("active");
-//
-//     });
-//
-// document
-//     .getElementById("checkoutForm")
-//     .addEventListener("submit", function (e) {
-//
-//         e.preventDefault();
-//
-//         document
-//             .getElementById("confirmTotal")
-//             .innerHTML = totalPrice.innerHTML;
-//
-//         document
-//             .getElementById("confirmModal")
-//             .classList.add("active");
-//
-//     });
-//
-//
-// document
-//     .getElementById("cancelConfirm")
-//     .onclick = function () {
-//
-//     document
-//         .getElementById("confirmModal")
-//         .classList.remove("active");
-//
-// };
-
-
 document
     .getElementById("acceptOrder")
     .onclick = function () {

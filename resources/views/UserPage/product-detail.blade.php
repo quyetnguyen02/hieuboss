@@ -85,7 +85,7 @@
                             Thêm Giỏ Hàng
 
                         </button>
-                        <button class="buy-now checkout">
+                        <button class="buy-now checkout-detail" id="checkout">
 
                             MUA NGAY
 
