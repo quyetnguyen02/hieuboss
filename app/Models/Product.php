@@ -60,6 +60,8 @@ class Product extends Model
 
                 $query->where('name', 'like', "%{$keyword}%")
                     ->orWhere('sku', 'like', "%{$keyword}%")
+                    ->orWhere('original_price', 'like', "%{$keyword}%")
+                    ->orWhere('sale_price', 'like', "%{$keyword}%")
                     ->orWhere('id', $keyword);
 
             });

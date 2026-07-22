@@ -11,6 +11,7 @@ use App\Models\Shop;
 use App\Models\Thumb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 class HomeController extends Controller
@@ -68,13 +69,16 @@ class HomeController extends Controller
         $type = $request->type;
         $category_id = $request->category_id;
 
+        $keyword = trim($keyword);
+        $keywordAscii = strtolower(Str::ascii($keyword));
+
         //get categories
         $categoryModel = new Category();
         $categories = $categoryModel->getCategoryLists()->keyBy('id');
 
         $productModel = new Product();
 
-        $products = $productModel->searchProducts($keyword, $price, $gen, $type, $category_id);
+        $products = $productModel->searchProducts($keywordAscii, $price, $gen, $type, $category_id);
         $categoryListProducts = $products->getCollection()
             ->groupBy('category_id')
             ->toArray();
