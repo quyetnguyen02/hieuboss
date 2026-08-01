@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../pindonghieuboss"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"CodeGPT.apiKey": "CodeGPT Plus Beta"
+	}
+}
