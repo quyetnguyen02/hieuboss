@@ -8,6 +8,7 @@ use App\Models\Consultation;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductPriceTier;
 use App\Models\Shop;
 use App\Models\Thumb;
 use Illuminate\Http\Request;
@@ -18,11 +19,11 @@ use Illuminate\Support\Str;
 class HomeController extends Controller
 {
     public $shop;
-    public $gen = [1, 2, 3];
-    public $types = [
-        '0' => 'Phụ kiện',
-        '1' => 'Pin',
-        '2' => 'Điện',
+    public $cell = [5, 10, 15, 20, 30];
+    public $cell_type = [
+        '0' => 'SunPower',
+        '1' => 'Eve',
+        '2' => 'SamSung',
     ];
 
     public function __construct() {
@@ -43,7 +44,7 @@ class HomeController extends Controller
 
         //get Product
         $productModel = new Product();
-        $products = $productModel->getProductsByCategory([26, 57, 27, 26, 25,2]);
+        $products = $productModel->getProductsByCategory([1,2,3,4, 5]);
 
 
         $categoryListProducts = collect($products)->keys()->all();
@@ -66,7 +67,7 @@ class HomeController extends Controller
     {
         $keyword = $request->keyword;
         $price = $request->price;
-        $gen = $request->gen;
+        $cell = $request->cell;
         $type = $request->type;
         $category_id = $request->category_id;
 
@@ -79,7 +80,7 @@ class HomeController extends Controller
 
         $productModel = new Product();
 
-        $products = $productModel->searchProducts($keywordAscii, $price, $gen, $type, $category_id);
+        $products = $productModel->searchProducts($keywordAscii, $price, $cell, $type, $category_id);
         $categoryListProducts = $products->getCollection()
             ->groupBy('category_id')
             ->toArray();
@@ -91,13 +92,13 @@ class HomeController extends Controller
             'categoryListProducts' => $categoryListProducts,
             'shop' => $this->shop,
             'categories' => $categories,
-            'gens' => $this->gen,
-            'types' => $this->types,
+            'cells' => $this->cell,
+            'cell_type' => $this->cell_type,
         ]);
 
     }
 
-    public function productDetail(Request$request, $id, $slug)
+    public function productDetail(Request $request, $id, $slug)
     {
         //get categories
         $categoryModel = new Category();
@@ -106,18 +107,21 @@ class HomeController extends Controller
         //get product by id
         $productModel = new Product();
         $product = $productModel->getProductById($id);
+        $productPriceTierModel = new ProductPriceTier();
+        $productPriceTier = $productPriceTierModel->getByProductId($product['id']);
 
         //get thumbs
         $thumbModel = new Thumb();
         $thumb_ids = json_decode($product['thumb_id'], true);;
         $thumbs = $thumbModel->getThumbByIds($thumb_ids)->pluck('src')->toArray();
         $product['thumbs'] = $thumbs;
+        $product['specifications'] = json_decode($product['specifications'], true);
         return view('UserPage.product-detail', [
             'product' => $product,
             'shop' => $this->shop,
             'keyword' => '',
             'categories' => $categories,
-
+            'productPriceTier' => $productPriceTier,
         ]);
     }
 
@@ -172,7 +176,6 @@ class HomeController extends Controller
                 'total_price'=>$total,
                 'web' => 0
             ];
-//            dd($order);
             $orderModel = new Order();
             $order = $orderModel->add($order);
 
@@ -247,7 +250,12 @@ class HomeController extends Controller
 
                 'phone'=>$request->phone,
                 'product'=>$request->product,
+<<<<<<< HEAD
                 'web' => 0
+=======
+                'web' => 1
+
+>>>>>>> cda5c3d (update pindong)
             ]);
 
             return response()->json([
