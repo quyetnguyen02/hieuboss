@@ -250,13 +250,9 @@ class HomeController extends Controller
 
                 'phone'=>$request->phone,
                 'product'=>$request->product,
-<<<<<<< HEAD
                 'web' => 0
-=======
-                'web' => 1
-
->>>>>>> cda5c3d (update pindong)
             ]);
+
 
             return response()->json([
                 'success'=>true,
