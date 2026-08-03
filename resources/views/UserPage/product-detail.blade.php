@@ -59,15 +59,6 @@
                             <div class="new-price" id="unitPrice"></div>
 
                         </div>
-                        @if($product['category_id'] === 1)
-                            <div class="price-tier-box">
-                                <div class="tier-title">
-                                    Giá theo số lượng
-                                </div>
-
-                                <div id="priceTierList"></div>
-                            </div>
-                        @endif
 
                         <div class="quantity-wrapper">
                             <span class="label">Số lượng</span>

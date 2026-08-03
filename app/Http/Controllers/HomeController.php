@@ -39,11 +39,12 @@ class HomeController extends Controller
         $bannerModel = new Banner();
         $banners = $bannerModel->getBannersDisplay();
 
-        // get Product
-        $productModel = new Product;
+        // get Product  
+        $productModel = new Product();
         $categoryIds = Category::where('show_on_homepage', true)
             ->pluck('id')
             ->toArray();
+        $products = $productModel->getProductsByCategory([1,2,3,4, 5]);
 
         if (empty($categoryIds)) {
             $categoryIds = [1, 2, 3, 4, 5];
@@ -97,7 +98,7 @@ class HomeController extends Controller
             'shop' => $this->shop,
             'categories' => $categories,
             'cells' => $this->cell,
-            'cell_type' => $cell_type,
+            'cell_type' => $this->cell_type,
         ]);
 
     }

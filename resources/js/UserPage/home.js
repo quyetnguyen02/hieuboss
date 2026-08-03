@@ -19,6 +19,20 @@ document.querySelectorAll(".quick-view-btn").forEach(btn => {
 
         document.getElementById('skuModal').value = this.dataset.sku;
         document.getElementById('categoryId').value = this.dataset.cate;
+        console.log('dataset-cate' + this.dataset.cate)
+        document.getElementById('categoryId').value = this.dataset.cate;
+
+        const btn = document.getElementById("btnAddCart");
+        btn.dataset.id = this.dataset.id;
+        console.log(this.dataset.id)
+        if (checkProductInCart(this.dataset.id)) {
+            btn.disabled = true;
+            btn.innerText = "Đã thêm vào giỏ";
+        } else {
+            btn.disabled = false;
+            btn.innerText = "Thêm Vào Giỏ";
+        }
+
         let oldPrice = document.getElementById("modalOldPrice");
         let newPrice = document.getElementById("modalNewPrice");
 
