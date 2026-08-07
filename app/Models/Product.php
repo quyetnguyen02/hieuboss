@@ -9,8 +9,6 @@ class Product extends Model
 {
     protected $table = 'products_p';
 
-<<<<<<< HEAD
-=======
     protected $fillable = [
         'name',
         'sku',
@@ -27,21 +25,17 @@ class Product extends Model
         'visible',
     ];
 
->>>>>>> 7f568cc (update dashboard admin)
     protected $appends = [
         'discount_percent',
     ];
 
-<<<<<<< HEAD
     public function image(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-=======
     protected $casts = [
         'specifications' => 'array',
         'visible' => 'boolean',
     ];
 
     public function image(): BelongsTo
->>>>>>> 7f568cc (update dashboard admin)
     {
         return $this->belongsTo(Thumb::class, 'image_id');
     }
@@ -81,13 +75,8 @@ class Product extends Model
 
     public function searchProducts(?string $keyword, $price, $cell, $cell_type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
     {
-<<<<<<< HEAD
-//        dd($keyword, $price, $cell, $cell_type, $category_id);
-        $query = Product::with('image');
-=======
-        //        dd($keyword, $price, $cell, $cell_type, $category_id);
+
         $query = Product::with('image')->where('visible', 1);
->>>>>>> 7f568cc (update dashboard admin)
         // Search keyword
 
         $query->when($keyword, function ($q) use ($keyword) {
@@ -136,8 +125,7 @@ class Product extends Model
             $query->where('category_id', $category_id);
         }
 
-//        dd($query->toSql(), $keyword, $price, $cell, $cell_type, $category_id);
-        return $query->paginate(40)->withQueryString();
+        return $query->orderBy('category_id')->paginate(40)->withQueryString();
     }
 
 
