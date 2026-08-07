@@ -120,6 +120,8 @@ class HomeController extends Controller
         $thumbs = $thumbModel->getThumbByIds($thumb_ids)->pluck('src')->toArray();
         $product['thumbs'] = $thumbs;
         $product['specifications'] = json_decode($product['specifications'], true);
+
+
         return view('UserPage.product-detail', [
             'product' => $product,
             'shop' => $this->shop,
