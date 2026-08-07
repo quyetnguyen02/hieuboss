@@ -42,10 +42,17 @@ class HomeController extends Controller
         $bannerModel = new Banner();
         $banners = $bannerModel->getBannersDisplay();
 
-        //get Product
-        $productModel = new Product();
-        $products = $productModel->getProductsByCategory([1,2,3,4, 5]);
+        // get Product
+        $productModel = new Product;
+        $categoryIds = Category::where('show_on_homepage', true)
+            ->pluck('id')
+            ->toArray();
 
+        if (empty($categoryIds)) {
+            $categoryIds = [1, 2, 3, 4, 5];
+        }
+
+        $products = $productModel->getProductsByCategory($categoryIds);
 
         $categoryListProducts = collect($products)->keys()->all();
 
