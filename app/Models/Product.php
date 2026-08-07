@@ -13,6 +13,7 @@ class Product extends Model
 =======
     protected $fillable = [
         'name',
+        'sku',
         'image_id',
         'image_path',
         'category_id',
