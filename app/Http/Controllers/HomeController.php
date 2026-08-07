@@ -10,6 +10,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductPriceTier;
 use App\Models\Shop;
+use App\Models\CellType;
 use App\Models\Thumb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,7 @@ class HomeController extends Controller
 {
     public $shop;
     public $cell = [5, 10, 15, 20, 30];
+<<<<<<< HEAD
     public $cell_type = [
         '0' => 'SunPower',
         '1' => 'Eve',
@@ -29,6 +31,13 @@ class HomeController extends Controller
     public function __construct() {
         //get shop info
         $shopModel = new Shop();
+=======
+
+    public function __construct()
+    {
+        // get shop info
+        $shopModel = new Shop;
+>>>>>>> 3a50b1c (update search page)
         $this->shop = $shopModel->getShopInfo();
     }
 
@@ -92,6 +101,10 @@ class HomeController extends Controller
             ->groupBy('category_id')
             ->toArray();
 
+<<<<<<< HEAD
+=======
+        $cell_type = CellType::all()->pluck('name')->toArray();
+>>>>>>> 3a50b1c (update search page)
 
         return view('UserPage.search', [
             'keyword' => $keyword,
@@ -100,7 +113,7 @@ class HomeController extends Controller
             'shop' => $this->shop,
             'categories' => $categories,
             'cells' => $this->cell,
-            'cell_type' => $this->cell_type,
+            'cell_type' => $cell_type,
         ]);
 
     }
