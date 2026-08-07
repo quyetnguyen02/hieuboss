@@ -9,11 +9,36 @@ class Product extends Model
 {
     protected $table = 'products_p';
 
+<<<<<<< HEAD
+=======
+    protected $fillable = [
+        'name',
+        'image_id',
+        'image_path',
+        'category_id',
+        'original_price',
+        'sale_price',
+        'type',
+        'thumb_id',
+        'specifications',
+        'visible',
+    ];
+
+>>>>>>> 7f568cc (update dashboard admin)
     protected $appends = [
         'discount_percent',
     ];
 
+<<<<<<< HEAD
     public function image(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+=======
+    protected $casts = [
+        'specifications' => 'array',
+        'visible' => 'boolean',
+    ];
+
+    public function image(): BelongsTo
+>>>>>>> 7f568cc (update dashboard admin)
     {
         return $this->belongsTo(Thumb::class, 'image_id');
     }
@@ -25,6 +50,7 @@ class Product extends Model
 
         foreach ($categoryIds as $categoryId) {
             $result[$categoryId] = Product::with('image:id,src')
+                ->where('visible', 1)
                 ->where('category_id', $categoryId)
                 ->latest()
                 ->take(8)
@@ -52,8 +78,13 @@ class Product extends Model
 
     public function searchProducts(?string $keyword, $price, $cell, $cell_type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
     {
+<<<<<<< HEAD
 //        dd($keyword, $price, $cell, $cell_type, $category_id);
         $query = Product::with('image');
+=======
+        //        dd($keyword, $price, $cell, $cell_type, $category_id);
+        $query = Product::with('image')->where('visible', 1);
+>>>>>>> 7f568cc (update dashboard admin)
         // Search keyword
 
         $query->when($keyword, function ($q) use ($keyword) {
@@ -110,6 +141,7 @@ class Product extends Model
     public function getProductById(int $id): array {
         return Product::with('image:id,src')
             ->where('id', $id)
+            ->where('visible', 1)
             ->first()
             ->toArray();
     }
