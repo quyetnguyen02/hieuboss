@@ -169,7 +169,8 @@ class HomeController extends Controller
 
                 'address'=>$request->address,
 
-                'total_price'=>$total
+                'total_price'=>$total,
+                'web' => 0
             ];
 //            dd($order);
             $orderModel = new Order();
@@ -245,15 +246,14 @@ class HomeController extends Controller
                 'customer_name'=>$request->customer_name,
 
                 'phone'=>$request->phone,
-                'product'=>$request->product
-
+                'product'=>$request->product,
+                'web' => 0
             ]);
 
             return response()->json([
                 'success'=>true,
             ]);
         } catch (\Throwable $e) {
-            dd($e);
             return response()->json([
                 'success'=>false,
                 'message'=>'Đăng ký thất bại, có lỗi xảy ra!'
