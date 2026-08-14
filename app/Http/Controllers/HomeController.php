@@ -21,23 +21,11 @@ class HomeController extends Controller
 {
     public $shop;
     public $cell = [5, 10, 15, 20, 30];
-<<<<<<< HEAD
-    public $cell_type = [
-        '0' => 'SunPower',
-        '1' => 'Eve',
-        '2' => 'SamSung',
-    ];
-
-    public function __construct() {
-        //get shop info
-        $shopModel = new Shop();
-=======
 
     public function __construct()
     {
         // get shop info
         $shopModel = new Shop;
->>>>>>> 3a50b1c (update search page)
         $this->shop = $shopModel->getShopInfo();
     }
 
@@ -101,10 +89,6 @@ class HomeController extends Controller
             ->groupBy('category_id')
             ->toArray();
 
-<<<<<<< HEAD
-=======
-        $cell_type = CellType::all()->pluck('name')->toArray();
->>>>>>> 3a50b1c (update search page)
 
         return view('UserPage.search', [
             'keyword' => $keyword,
