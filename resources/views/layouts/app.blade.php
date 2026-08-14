@@ -302,7 +302,7 @@
                     <div class="sidebar-submenu @if(request()->routeIs('admin.products*') || request()->routeIs('admin.category-display*') || request()->routeIs('admin.cell-types*')) show @endif">
                         <a href="{{ route('admin.products.index') }}" class="@if(request()->routeIs('admin.products*')) active @endif">Danh sách</a>
                         <a href="{{ route('admin.category-display.edit') }}" class="@if(request()->routeIs('admin.category-display*')) active @endif">Danh mục</a>
-                        <a href="{{ route('admin.cell-types.index') }}" class="@if(request()->routeIs('admin.cell-types*')) active @endif">Thương hiệu Cell</a>
+                        {{-- <a href="{{ route('admin.cell-types.index') }}" class="@if(request()->routeIs('admin.cell-types*')) active @endif">Thương hiệu Cell</a> --}}
                     </div>
                 </div>
                 <a href="{{ route('admin.orders.index') }}" class="@if(request()->routeIs('admin.orders*')) active @endif">

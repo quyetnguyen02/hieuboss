@@ -57,8 +57,9 @@
                         <select class="form-select @error('type') is-invalid @enderror"
                                 id="type" name="type" required>
                             <option value="">-- Chọn Loại --</option>
-                            <option value="0" {{ old('type', $product->type) == '0' ? 'selected' : '' }}>Cell Pin</option>
-                            <option value="1" {{ old('type', $product->type) == '1' ? 'selected' : '' }}>Pin Đóng</option>
+                            <option value="0" {{ old('type', $product->type) == '0' ? 'selected' : '' }}>Phụ Kiện</option>
+                            <option value="1" {{ old('type', $product->type) == '1' ? 'selected' : '' }}>Pin </option>
+                            <option value="2" {{ old('type', $product->type) == '2' ? 'selected' : '' }}>Điện</option>
     
                         </select>
                         @error('type')
@@ -232,7 +233,7 @@
                     </div>
                 </div>
 
-                <!-- Thông Số Sản Phẩm -->
+                {{-- <!-- Thông Số Sản Phẩm -->
                 <div class="card border-0 bg-light mb-3">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -309,7 +310,7 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 @if($product->discount_percent > 0)
                     <div class="alert alert-info small" role="alert">

@@ -20,7 +20,12 @@ use Illuminate\Support\Str;
 class HomeController extends Controller
 {
     public $shop;
-    public $cell = [5, 10, 15, 20, 30];
+    public $gen = [1, 2, 3];
+    public $types = [
+        '0' => 'Phụ kiện',
+        '1' => 'Pin',
+        '2' => 'Điện',
+    ];
 
     public function __construct()
     {
@@ -44,10 +49,9 @@ class HomeController extends Controller
         $categoryIds = Category::where('show_on_homepage', true)
             ->pluck('id')
             ->toArray();
-        $products = $productModel->getProductsByCategory([1,2,3,4, 5]);
 
         if (empty($categoryIds)) {
-            $categoryIds = [1, 2, 3, 4, 5];
+            $categoryIds = [26, 57, 27, 26, 25,2];
         }
 
         $products = $productModel->getProductsByCategory($categoryIds);
@@ -70,9 +74,10 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
+        
         $keyword = $request->keyword;
         $price = $request->price;
-        $cell = $request->cell;
+        $gen = $request->gen;
         $type = $request->type;
         $category_id = $request->category_id;
 
@@ -85,7 +90,7 @@ class HomeController extends Controller
 
         $productModel = new Product();
 
-        $products = $productModel->searchProducts($keywordAscii, $price, $cell, $type, $category_id);
+        $products = $productModel->searchProducts($keywordAscii, $price, $gen, $type, $category_id);
         $categoryListProducts = $products->getCollection()
             ->groupBy('category_id')
             ->toArray();
@@ -97,8 +102,8 @@ class HomeController extends Controller
             'categoryListProducts' => $categoryListProducts,
             'shop' => $this->shop,
             'categories' => $categories,
-            'cells' => $this->cell,
-            'cell_type' => $this->cell_type,
+            'gens' => $this->gen,
+            'types' => $this->types,
         ]);
 
     }
@@ -120,7 +125,6 @@ class HomeController extends Controller
         $thumb_ids = json_decode($product['thumb_id'], true);;
         $thumbs = $thumbModel->getThumbByIds($thumb_ids)->pluck('src')->toArray();
         $product['thumbs'] = $thumbs;
-        $product['specifications'] = json_decode($product['specifications'], true);
 
 
         return view('UserPage.product-detail', [

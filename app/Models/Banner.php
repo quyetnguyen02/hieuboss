@@ -6,15 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Banner extends Model
 {
-    protected $table = 'banners_p';
+    protected $table = 'banners';
 
-<<<<<<< HEAD
-=======
     protected $fillable = [
         'src',
         'display',
     ];
->>>>>>> 7f568cc (update dashboard admin)
 
     function getBannersDisplay(): \Illuminate\Database\Eloquent\Collection
     {

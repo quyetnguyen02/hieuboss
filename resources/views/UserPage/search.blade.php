@@ -28,8 +28,7 @@
                                         data-original="{{ $product['original_price'] }}"
                                         data-sale="{{ $product['sale_price'] }}"
                                         data-id = "{{$product['id']}}"
-                                        data-sku = "{{$product['sku']}}"
-                                        data-cate = "{{$product['category_id']}}">
+                                        data-sku = {{$product['sku']}}>
                                     XEM NHANH
                                 </button>
 
@@ -44,15 +43,11 @@
                                 </div>
 
                                 <div class="price">
-                                    @if($product['original_price'] !== 0)
-                                        @if($product['sale_price'])
-                                            <span class="old-price">{{number_format($product['original_price'])}}đ</span>
-                                            <span class="new-price">{{number_format($product['sale_price'])}}đ</span>
-                                        @else
-                                            <span class="new-price">{{number_format($product['original_price'])}}đ</span>
-                                        @endif
+                                    @if($product['sale_price'])
+                                        <span class="old-price">{{number_format($product['original_price'])}}đ</span>
+                                        <span class="new-price">{{number_format($product['sale_price'])}}đ</span>
                                     @else
-                                        Liên Hệ Ngay {{$shop->hotline}}
+                                        <span class="new-price">{{number_format($product['original_price'])}}đ</span>
                                     @endif
                                 </div>
                             </a>
@@ -70,7 +65,6 @@
                     <div class="modal-content">
                         <span class="close-modal">&times;</span>
                         <input type="hidden" id="skuModal" value="">
-                        <input type="hidden" id="categoryId" value="">
 
 
                         <div class="modal-left">
@@ -80,10 +74,10 @@
                         <div class="modal-right">
                             <h1 id="modalTitle"></h1>
 
-{{--                            <div class="product-option">--}}
-{{--                                <button class="option-btn active">Thân máy</button>--}}
-{{--                                --}}{{--                            <button class="option-btn">Bộ 1 Pin</button>--}}
-{{--                            </div>--}}
+                            <div class="product-option">
+                                <button class="option-btn active">Thân máy</button>
+                                {{--                            <button class="option-btn">Bộ 1 Pin</button>--}}
+                            </div>
                             <div class="product-price">
                                 <span class="old-price" id="modalOldPrice"></span>
                                 <span class="new-price" id="modalNewPrice"></span>
@@ -95,7 +89,6 @@
 
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -145,14 +138,15 @@
                                 {{ request('price') == '1000000-2000000' ? 'checked' : '' }}>
                             1.000.000đ - 2.000.000đ
                         </label>
-{{--                        <label>--}}
-{{--                            <input--}}
-{{--                                type="radio"--}}
-{{--                                name="price"--}}
-{{--                                value="2000000-max"--}}
-{{--                                {{ request('price') == '2000000-max' ? 'checked' : '' }}>--}}
-{{--                            Trên 2.000.000đ--}}
-{{--                        </label>--}}
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="price"
+                                value="2000000-max"
+                                {{ request('price') == '2000000-max' ? 'checked' : '' }}>
+                            Trên 2.000.000đ
+                        </label>
                         <label>
                             <input
                                 type="radio"
@@ -167,19 +161,19 @@
 
                     <div class="filter-group">
 
-                        <h4>Số Lượng Cell</h4>
+                        <h4>Loại Sản Phẩm</h4>
 
-                        @foreach($cells as $cell)
+                        @foreach($gens as $gen)
 
                             <label>
 
                                 <input
                                     type="checkbox"
-                                    name="cell[]"
-                                    value="{{ $cell }}"
-                                    {{ in_array($cell, request('cell', [])) ? 'checked' : '' }}>
+                                    name="gen[]"
+                                    value="{{ $gen }}"
+                                    {{ in_array($gen, request('gen', [])) ? 'checked' : '' }}>
 
-                                {{ $cell }} Cell
+                                Gen {{ $gen }}
 
                             </label>
 
@@ -189,9 +183,9 @@
 
                     <div class="filter-group">
 
-                        <h4>Loại Cell Pin</h4>
+                        <h4>Sản phẩm sử dụng</h4>
 
-                        @foreach($cell_type as $key => $value)
+                        @foreach($types as $key => $value)
 
                             <label>
 

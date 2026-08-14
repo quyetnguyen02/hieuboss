@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    protected $table = 'products_p';
+    protected $table = 'products';
 
     protected $fillable = [
         'name',
@@ -29,13 +29,12 @@ class Product extends Model
         'discount_percent',
     ];
 
-    public function image(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     protected $casts = [
         'specifications' => 'array',
         'visible' => 'boolean',
     ];
 
-    public function image(): BelongsTo
+    public function image()
     {
         return $this->belongsTo(Thumb::class, 'image_id');
     }

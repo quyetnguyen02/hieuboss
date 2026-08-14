@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shop extends Model
 {
-    protected $table = 'shop_info_p';
+    protected $table = 'shop_info';
 
     public function getShopInfo()
     {

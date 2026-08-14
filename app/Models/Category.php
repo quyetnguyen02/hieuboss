@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $table = 'categories_p';
+    protected $table = 'categories';
 
     protected $fillable = [
         'name',
@@ -17,7 +17,7 @@ class Category extends Model
         'show_on_homepage' => 'boolean',
     ];
 
-    public function getCategoryLists(): Collection
+    public function getCategoryLists()
     {
         return $this->all();
     }

@@ -145,7 +145,7 @@
                 </div>
             </div>
 
-            @if ($product['specifications'])
+            {{-- @if ($product['specifications'])
                 <section class="product-info" style="padding: 0px">
                     <div class="info-card">
 
@@ -170,7 +170,7 @@
 
                     </div>
                 </section>
-            @endif
+            @endif --}}
         </div>
         @include('UserPage.layouts.modal')
         @include('UserPage.layouts.orderModal')

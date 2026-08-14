@@ -34,7 +34,7 @@ class CategoryDisplayController extends Controller
     {
         $validated = $request->validate([
             'show_categories' => 'nullable|array',
-            'show_categories.*' => 'integer|exists:categories_p,id',
+            'show_categories.*' => 'integer|exists:categories,id',
         ]);
 
         $show = collect($validated['show_categories'] ?? [])->map(fn ($id) => (int) $id)->all();
@@ -46,5 +46,6 @@ class CategoryDisplayController extends Controller
 
         return redirect()->route('admin.category-display.edit')
             ->with('success', 'Cập nhật hiển thị category trên trang chủ thành công');
+        
     }
 }

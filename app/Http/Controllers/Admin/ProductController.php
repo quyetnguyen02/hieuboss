@@ -60,23 +60,13 @@ class ProductController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'sku' => 'nullable|string|max:255',
-                'category_id' => 'required|exists:categories_p,id',
+                'category_id' => 'required|exists:categories,id',
                 'product_image_main' => 'required|image|mimes:jpeg,png,gif,webp,jpg|max:5120',
                 'product_images' => 'nullable|array',
                 'product_images.*' => 'image|mimes:jpeg,png,gif,webp,jpg|max:5120',
                 'original_price' => 'required|numeric|min:0',
                 'sale_price' => 'nullable|numeric|min:0',
                 'type' => 'required|in:0,1,2',
-                'spec_keys' => 'nullable|array',
-                'spec_keys.*' => 'nullable|string',
-                'spec_values' => 'nullable|array',
-                'spec_values.*' => 'nullable|string',
-                'price_tiers_qty' => 'nullable|array',
-                'price_tiers_qty.*' => 'nullable|integer|min:1',
-                'price_tiers_price' => 'nullable|array',
-                'price_tiers_price.*' => 'nullable|numeric|min:0',
-                'cell_type' => 'required_if:type,1|nullable|exists:cell_types,id',
-                'cell_number' => 'required_if:type,1|nullable|integer|in:5,10,15,20,30',
             ]);
 
 
@@ -111,17 +101,17 @@ class ProductController extends Controller
         }
 
         // Xử lý thông số kỹ thuật (specifications) dạng [{"key": "...", "value": "..."}, ...]
-        $specifications = [];
-        if (! empty($validated['spec_keys']) && ! empty($validated['spec_values'])) {
-            foreach ($validated['spec_keys'] as $key => $specKey) {
-                if (! empty($specKey) && isset($validated['spec_values'][$key]) && $validated['spec_values'][$key] !== '') {
-                    $specifications[] = [
-                        'key' => trim($specKey),
-                        'value' => trim($validated['spec_values'][$key]),
-                    ];
-                }
-            }
-        }
+        // $specifications = [];
+        // if (! empty($validated['spec_keys']) && ! empty($validated['spec_values'])) {
+        //     foreach ($validated['spec_keys'] as $key => $specKey) {
+        //         if (! empty($specKey) && isset($validated['spec_values'][$key]) && $validated['spec_values'][$key] !== '') {
+        //             $specifications[] = [
+        //                 'key' => trim($specKey),
+        //                 'value' => trim($validated['spec_values'][$key]),
+        //             ];
+        //         }
+        //     }
+        // }
 
         $data = [
             'name' => $validated['name'],
@@ -132,29 +122,12 @@ class ProductController extends Controller
             'original_price' => $validated['original_price'] ?? '0',
             'sale_price' => $validated['sale_price'] ?? '0',
             'type' => $validated['type'],
-            'cell_type' => $validated['type'] === '1' ? $validated['cell_type'] : null,
-            'cell_number' => $validated['type'] === '1' ? $validated['cell_number'] : null,
-            'specifications' => ! empty($specifications) ? json_encode($specifications, JSON_UNESCAPED_UNICODE) : null,
             'visible' => 1,
         ];
 
         $product = Product::create($data);
 
-        if ($product->type === '0' && ! empty($validated['price_tiers_qty']) && ! empty($validated['price_tiers_price'])) {
-            ProductPriceTier::where('product_id', $product->id)->delete();
-
-            foreach ($validated['price_tiers_qty'] as $index => $quantity) {
-                $price = $validated['price_tiers_price'][$index] ?? null;
-
-                if ($quantity && $price !== null) {
-                    ProductPriceTier::create([
-                        'product_id' => $product->id,
-                        'from_quantity' => $quantity,
-                        'price' => $price,
-                    ]);
-                }
-            }
-        }
+       
         // dd($product);
         DB::commit();
 
@@ -200,25 +173,15 @@ class ProductController extends Controller
 
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'category_id' => 'required|exists:categories_p,id',
+                'category_id' => 'required|exists:categories,id',
                 'product_image_main' => 'nullable|image|mimes:jpeg,png,gif,webp,jpg|max:5120',
                 'product_images' => 'nullable|array',
                 'product_images.*' => 'image|mimes:jpeg,png,gif,webp,jpg|max:5120',
                 'existing_thumb_ids' => 'nullable|array',
-                'existing_thumb_ids.*' => 'integer|exists:thumbs_p,id',
+                'existing_thumb_ids.*' => 'integer|exists:thumbs,id',
                 'original_price' => 'required|numeric|min:0',
                 'sale_price' => 'nullable|numeric|min:0',
                 'type' => 'required|in:0,1,2',
-                'cell_type' => 'required_if:type,1|nullable|exists:cell_types,id',
-                'cell_number' => 'required_if:type,1|nullable|integer|in:5,10,15,20,30',
-                'spec_keys' => 'nullable|array',
-                'spec_keys.*' => 'nullable|string',
-                'spec_values' => 'nullable|array',
-                'spec_values.*' => 'nullable|string',
-                'price_tiers_qty' => 'nullable|array',
-                'price_tiers_qty.*' => 'nullable|integer|min:1',
-                'price_tiers_price' => 'nullable|array',
-                'price_tiers_price.*' => 'nullable|numeric|min:0',
             ]);
 
             // 1. Xử lý ảnh sản phẩm chính
@@ -258,18 +221,18 @@ class ProductController extends Controller
             // Đảm bảo ID ảnh chính ($imageId) luôn nằm ở vị trí ĐẦU TIÊN trong mảng ảnh
             $allThumbIds = array_values(array_merge([$imageId], $subThumbIds));
 
-            // 3. Xử lý thông số kỹ thuật (specifications) dạng [{"key": "...", "value": "..."}, ...]
-            $specifications = [];
-            if (! empty($validated['spec_keys']) && ! empty($validated['spec_values'])) {
-                foreach ($validated['spec_keys'] as $key => $specKey) {
-                    if (! empty($specKey) && isset($validated['spec_values'][$key]) && $validated['spec_values'][$key] !== '') {
-                        $specifications[] = [
-                            'key' => trim($specKey),
-                            'value' => trim($validated['spec_values'][$key]),
-                        ];
-                    }
-                }
-            }
+            // // 3. Xử lý thông số kỹ thuật (specifications) dạng [{"key": "...", "value": "..."}, ...]
+            // $specifications = [];
+            // if (! empty($validated['spec_keys']) && ! empty($validated['spec_values'])) {
+            //     foreach ($validated['spec_keys'] as $key => $specKey) {
+            //         if (! empty($specKey) && isset($validated['spec_values'][$key]) && $validated['spec_values'][$key] !== '') {
+            //             $specifications[] = [
+            //                 'key' => trim($specKey),
+            //                 'value' => trim($validated['spec_values'][$key]),
+            //             ];
+            //         }
+            //     }
+            // }
         
 
             $product->update([
@@ -280,37 +243,36 @@ class ProductController extends Controller
                 'original_price' => $validated['original_price'],
                 'sale_price' => $validated['sale_price'],
                 'type' => $validated['type'],
-                'cell_type' => $validated['type'] === '1' ? $validated['cell_type'] : null,
-                'cell_number' => $validated['type'] === '1' ? $validated['cell_number'] : null,
-                'specifications' => ! empty($specifications) ? json_encode($specifications, JSON_UNESCAPED_UNICODE) : null,
                 'visible' => $request->has('visible') ? 1 : 0,
             ]);
 
-            if ($product->type === '0') {
-                ProductPriceTier::where('product_id', $product->id)->delete();
+            // if ($product->type === '0') {
+            //     ProductPriceTier::where('product_id', $product->id)->delete();
 
-                if (! empty($validated['price_tiers_qty']) && ! empty($validated['price_tiers_price'])) {
-                    foreach ($validated['price_tiers_qty'] as $index => $quantity) {
-                        $price = $validated['price_tiers_price'][$index] ?? null;
+            //     if (! empty($validated['price_tiers_qty']) && ! empty($validated['price_tiers_price'])) {
+            //         foreach ($validated['price_tiers_qty'] as $index => $quantity) {
+            //             $price = $validated['price_tiers_price'][$index] ?? null;
 
-                        if ($quantity && $price !== null) {
-                            ProductPriceTier::create([
-                                'product_id' => $product->id,
-                                'from_quantity' => $quantity,
-                                'price' => $price,
-                            ]);
-                        }
-                    }
-                }
-            } else {
-                ProductPriceTier::where('product_id', $product->id)->delete();
-            }
+            //             if ($quantity && $price !== null) {
+            //                 ProductPriceTier::create([
+            //                     'product_id' => $product->id,
+            //                     'from_quantity' => $quantity,
+            //                     'price' => $price,
+            //                 ]);
+            //             }
+            //         }
+            //     }
+            // } else {
+            //     ProductPriceTier::where('product_id', $product->id)->delete();
+            // }
 
             DB::commit();
 
             return redirect()->route('admin.products.index')->with('success', 'Cập nhật sản phẩm thành công');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
+
 
             return redirect()->back()->with('error', 'Có lỗi xảy ra khi cập nhật sản phẩm: ' . $e->getMessage());
         }
