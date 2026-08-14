@@ -115,11 +115,7 @@ class HomeController extends Controller
         $thumb_ids = json_decode($product['thumb_id'], true);;
         $thumbs = $thumbModel->getThumbByIds($thumb_ids)->pluck('src')->toArray();
         $product['thumbs'] = $thumbs;
-<<<<<<< HEAD
         $product['specifications'] = json_decode($product['specifications'], true);
-=======
-
->>>>>>> 7f568cc (update dashboard admin)
         return view('UserPage.product-detail', [
             'product' => $product,
             'shop' => $this->shop,
