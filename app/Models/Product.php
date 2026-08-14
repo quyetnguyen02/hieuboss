@@ -18,10 +18,7 @@ class Product extends Model
         'original_price',
         'sale_price',
         'type',
-        'cell_type',
-        'cell_number',
         'thumb_id',
-        'specifications',
         'visible',
     ];
 
@@ -72,7 +69,7 @@ class Product extends Model
         );
     }
 
-    public function searchProducts(?string $keyword, $price, $cell, $cell_type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
+    public function searchProducts(?string $keyword, $price, $gen, $type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
     {
 
         $query = Product::with('image')->where('visible', 1);
@@ -110,14 +107,14 @@ class Product extends Model
 
         }
 
-        // cell number
-        if (!empty($cell)) {
-            $query->whereIn('cell_number', $cell);
+       // gen
+        if (!empty($gen)) {
+            $query->whereIn('gen', $gen);
         }
 
         // type
-        if (!empty($cell_type)) {
-            $query->whereIn('cell_type', $cell_type);
+        if (!empty($type)) {
+            $query->whereIn('type', $type);
         }
 
         if (!empty($category_id)) {
