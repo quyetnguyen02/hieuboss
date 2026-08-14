@@ -30,6 +30,30 @@
         </div>
     @endif
 
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <form method="GET" action="{{ route('admin.products.index') }}" class="row g-2 align-items-center">
+                <div class="col-md-8 col-lg-10">
+                    <label for="product-search" class="visually-hidden">Tìm kiếm sản phẩm</label>
+                    <input
+                        id="product-search"
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        class="form-control form-control-sm"
+                        placeholder="Tìm theo tên sản phẩm hoặc ID..."
+                    >
+                </div>
+                <div class="col-md-4 col-lg-2 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm flex-fill">Tìm kiếm</button>
+                    @if(request('search'))
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary btn-sm">Xóa</a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card border-0 shadow-sm">
         <div class="table-responsive">
             <table class="table table-hover mb-0 small">
