@@ -7,13 +7,34 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    protected $table = 'products_p';
+    protected $table = 'products';
+
+    protected $fillable = [
+        'name',
+        'sku',
+        'image_id',
+        'image_path',
+        'category_id',
+        'original_price',
+        'sale_price',
+        'type',
+        'cell_type',
+        'cell_number',
+        'thumb_id',
+        'specifications',
+        'visible',
+    ];
 
     protected $appends = [
         'discount_percent',
     ];
 
-    public function image(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    protected $casts = [
+        'specifications' => 'array',
+        'visible' => 'boolean',
+    ];
+
+    public function image()
     {
         return $this->belongsTo(Thumb::class, 'image_id');
     }
@@ -25,6 +46,7 @@ class Product extends Model
 
         foreach ($categoryIds as $categoryId) {
             $result[$categoryId] = Product::with('image:id,src')
+                ->where('visible', 1)
                 ->where('category_id', $categoryId)
                 ->latest()
                 ->take(8)
@@ -52,8 +74,8 @@ class Product extends Model
 
     public function searchProducts(?string $keyword, $price, $cell, $cell_type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
     {
-//        dd($keyword, $price, $cell, $cell_type, $category_id);
-        $query = Product::with('image');
+
+        $query = Product::with('image')->where('visible', 1);
         // Search keyword
 
         $query->when($keyword, function ($q) use ($keyword) {
@@ -102,14 +124,14 @@ class Product extends Model
             $query->where('category_id', $category_id);
         }
 
-//        dd($query->paginate(40)->withQueryString());
-        return $query->paginate(40)->withQueryString();
+        return $query->orderBy('category_id')->paginate(40)->withQueryString();
     }
 
 
     public function getProductById(int $id): array {
         return Product::with('image:id,src')
             ->where('id', $id)
+            ->where('visible', 1)
             ->first()
             ->toArray();
     }
